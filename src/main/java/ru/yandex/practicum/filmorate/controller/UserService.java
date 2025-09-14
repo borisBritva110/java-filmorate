@@ -18,6 +18,7 @@ public class UserService {
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
     }
+
     public long getNextId() {
         return nextId++;
     }

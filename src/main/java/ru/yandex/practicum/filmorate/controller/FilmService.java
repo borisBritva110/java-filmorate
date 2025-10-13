@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import ru.yandex.practicum.filmorate.constants.ValidationMessages;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -27,7 +28,7 @@ public class FilmService {
 
     public Film createFilm(Film newFilm) {
         if (newFilm.getReleaseDate().isBefore(MIN_RELEASE_DATE)) {
-            throw new ValidationException("Дата выпуска фильма не может быть раньше 28 декабря 1895 года");
+            throw new ValidationException(ValidationMessages.RELEASE_DATE_TOO_EARLY);
         }
 
         long filmId = getNextId();
@@ -38,11 +39,11 @@ public class FilmService {
 
     public Film updateFilm(Film updatedFilm) {
         if (updatedFilm.getId() == null) {
-            throw new ValidationException("ID фильма должен быть указан");
+            throw new ValidationException(ValidationMessages.FILM_ID_REQUIRED);
         }
 
         if (!films.containsKey(updatedFilm.getId())) {
-            throw new ValidationException("Фильм с ID " + updatedFilm.getId() + " не найден");
+            throw new ValidationException(String.format(ValidationMessages.FILM_NOT_FOUND, updatedFilm.getId()));
         }
 
         Film existingFilm = films.get(updatedFilm.getId());

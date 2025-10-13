@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import ru.yandex.practicum.filmorate.constants.ValidationMessages;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @Slf4j
@@ -31,14 +32,14 @@ public class FilmController {
     @PostMapping
     public Film create(@Valid @RequestBody Film newFilm) {
         Film createdFilm = filmService.createFilm(newFilm);
-        log.info("Добавлен новый фильм: {}", createdFilm.getName());
+        log.info(ValidationMessages.FILM_ADDED, createdFilm.getName());
         return createdFilm;
     }
 
     @PutMapping
     public Film update(@Valid @RequestBody Film updatedFilm) {
         Film updated = filmService.updateFilm(updatedFilm);
-        log.info("Обновлен фильм: {}", updated.getName());
+        log.info(ValidationMessages.FILM_UPDATED, updated.getName());
         return updated;
     }
 }

@@ -7,5 +7,6 @@ public final class ValidationMessages {
     public static final String FILM_ADDED = "Добавлен новый фильм: {}";
     public static final String FILM_UPDATED = "Обновлен фильм: {}";
 
-    private ValidationMessages() {}
+    private ValidationMessages() {
+    }
 }

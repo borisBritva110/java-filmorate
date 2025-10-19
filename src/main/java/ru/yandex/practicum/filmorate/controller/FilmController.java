@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import ru.yandex.practicum.filmorate.constants.ValidationMessages;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
 
@@ -40,27 +41,27 @@ public class FilmController {
     @PostMapping
     public Film create(@Valid @RequestBody Film newFilm) {
         Film createdFilm = filmService.createFilm(newFilm);
-        log.info("Добавлен новый фильм: {}", createdFilm.getName());
+        log.info(ValidationMessages.FILM_ADDED, createdFilm.getName());
         return createdFilm;
     }
 
     @PutMapping
     public Film update(@Valid @RequestBody Film updatedFilm) {
         Film updated = filmService.updateFilm(updatedFilm);
-        log.info("Обновлен фильм: {}", updated.getName());
+        log.info(ValidationMessages.FILM_UPDATED, updated.getName());
         return updated;
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
         filmService.addLike(id, userId);
-        log.info("Пользователь {} поставил лайк фильму {}", userId, id);
+        log.info(ValidationMessages.FILM_LIKE_ADDED, userId, id);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
         filmService.removeLike(id, userId);
-        log.info("Пользователь {} удалил лайк с фильма {}", userId, id);
+        log.info(ValidationMessages.FILM_LIKE_REMOVED, userId, id);
     }
 
     @GetMapping("/popular")

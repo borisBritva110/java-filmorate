@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import ru.yandex.practicum.filmorate.constants.ValidationMessages;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.user.UserService;
 
@@ -39,27 +40,27 @@ public class UserController {
     @PostMapping
     public User create(@Valid @RequestBody User newUser) {
         User createdUser = userService.createUser(newUser);
-        log.info("Добавлен новый пользователь: {}", createdUser.getLogin());
+        log.info(ValidationMessages.USER_ADDED, createdUser.getLogin());
         return createdUser;
     }
 
     @PutMapping
     public User update(@Valid@RequestBody User updatedUser) {
         User updated = userService.updateUser(updatedUser);
-        log.info("Обновлен пользователь: {}", updated.getLogin());
+        log.info(ValidationMessages.USER_UPDATED, updated.getLogin());
         return updated;
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         userService.addFriend(id, friendId);
-        log.info("Пользователь {} добавил в друзья пользователя {}", id, friendId);
+        log.info(ValidationMessages.FRIEND_ADDED, id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable Long id, @PathVariable Long friendId) {
         userService.removeFriend(id, friendId);
-        log.info("Пользователь {} удалил из друзей пользователя {}", id, friendId);
+        log.info(ValidationMessages.FRIEND_REMOVED, id, friendId);
     }
 
     @GetMapping("/{id}/friends")

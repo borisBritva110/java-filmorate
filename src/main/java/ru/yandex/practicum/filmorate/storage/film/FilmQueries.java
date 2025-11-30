@@ -47,5 +47,6 @@ public final class FilmQueries {
     public static final String REMOVE_LIKE =
         "DELETE FROM likes WHERE film_id = ? AND user_id = ?";
 
-    private FilmQueries() {}
+    private FilmQueries() {
+    }
 }

@@ -11,5 +11,6 @@ public final class GenreQueries {
     public static final String EXISTS_BY_ID =
         "SELECT COUNT(*) FROM genre WHERE genre_id = ?";
 
-    private GenreQueries() {}
+    private GenreQueries() {
+    }
 }

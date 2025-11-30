@@ -11,5 +11,6 @@ public final class MpaQueries {
     public static final String EXISTS_BY_ID =
         "SELECT COUNT(*) FROM mpa_rating WHERE mpa_id = ?";
 
-    private MpaQueries() {}
+    private MpaQueries() {
+    }
 }

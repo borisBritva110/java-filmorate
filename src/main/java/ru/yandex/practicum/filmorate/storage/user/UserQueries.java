@@ -47,5 +47,6 @@ public final class UserQueries {
             "JOIN friendship f2 ON u.user_id = f2.friend_id " +
             "WHERE f1.user_id = ? AND f2.user_id = ?";
 
-    private UserQueries() {}
+    private UserQueries() {
+    }
 }

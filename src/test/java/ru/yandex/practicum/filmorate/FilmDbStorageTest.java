@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.GenreDto;
 import ru.yandex.practicum.filmorate.dto.MpaRatingDto;
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @ActiveProfiles("test")
+@Sql(scripts = {"/schema.sql", "/data.sql"})
 class FilmDbStorageTest {
 
     @Autowired

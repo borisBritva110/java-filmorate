@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserRowMapper;
@@ -18,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @ActiveProfiles("test")
+@Sql(scripts = {"/schema.sql", "/data.sql"})
 class UserDbStorageTest {
 
     @Autowired

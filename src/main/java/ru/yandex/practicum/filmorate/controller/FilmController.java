@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.constants.ValidationMessages;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
 
 @Slf4j
@@ -29,25 +29,25 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getFilm(@PathVariable Long id) {
+    public FilmDto getFilm(@PathVariable Long id) {
         return filmService.getFilmById(id);
     }
 
     @GetMapping
-    public List<Film> findAll() {
+    public List<FilmDto> findAll() {
         return filmService.getAllFilms();
     }
 
     @PostMapping
-    public Film create(@Valid @RequestBody Film newFilm) {
-        Film createdFilm = filmService.createFilm(newFilm);
+    public FilmDto create(@Valid @RequestBody FilmDto newFilm) {
+        FilmDto createdFilm = filmService.createFilm(newFilm);
         log.info(ValidationMessages.FILM_ADDED, createdFilm.getName());
         return createdFilm;
     }
 
     @PutMapping
-    public Film update(@Valid @RequestBody Film updatedFilm) {
-        Film updated = filmService.updateFilm(updatedFilm);
+    public FilmDto update(@Valid @RequestBody FilmDto updatedFilm) {
+        FilmDto updated = filmService.updateFilm(updatedFilm);
         log.info(ValidationMessages.FILM_UPDATED, updated.getName());
         return updated;
     }
@@ -65,7 +65,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(required = false) Integer count) {
+    public List<FilmDto> getPopularFilms(@RequestParam(required = false) Integer count) {
         return filmService.getPopularFilms(count);
     }
 }

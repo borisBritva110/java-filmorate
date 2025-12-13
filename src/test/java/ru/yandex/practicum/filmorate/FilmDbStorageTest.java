@@ -8,9 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import ru.yandex.practicum.filmorate.dto.FilmDto;
-import ru.yandex.practicum.filmorate.dto.GenreDto;
-import ru.yandex.practicum.filmorate.dto.MpaRatingDto;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
 import ru.yandex.practicum.filmorate.storage.film.FilmRowMapper;
 import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
@@ -49,25 +49,25 @@ class FilmDbStorageTest {
 
     @Test
     void testFindAllFilms() {
-        FilmDto film1 = createTestFilm("Film 1", "Description 1");
-        FilmDto film2 = createTestFilm("Film 2", "Description 2");
+        Film film1 = createTestFilm("Film 1", "Description 1");
+        Film film2 = createTestFilm("Film 2", "Description 2");
 
         filmStorage.save(film1);
         filmStorage.save(film2);
 
-        List<FilmDto> films = filmStorage.findAll();
+        List<Film> films = filmStorage.findAll();
 
         assertThat(films).hasSize(2);
-        assertThat(films).extracting(FilmDto::getName)
+        assertThat(films).extracting(Film::getName)
             .containsExactlyInAnyOrder("Film 1", "Film 2");
     }
 
     @Test
     void testFindFilmById() {
-        FilmDto film = createTestFilm("Test Film", "Test Description");
-        FilmDto savedFilm = filmStorage.save(film);
+        Film film = createTestFilm("Test Film", "Test Description");
+        Film savedFilm = filmStorage.save(film);
 
-        Optional<FilmDto> foundFilm = filmStorage.findById(savedFilm.getId());
+        Optional<Film> foundFilm = filmStorage.findById(savedFilm.getId());
 
         assertThat(foundFilm).isPresent();
         assertThat(foundFilm.get().getName()).isEqualTo("Test Film");
@@ -76,29 +76,29 @@ class FilmDbStorageTest {
 
     @Test
     void testSaveFilmWithGenres() {
-        FilmDto film = createTestFilm("Film with Genres", "Description");
-        Set<GenreDto> genres = new HashSet<>();
-        genres.add(GenreDto.builder().id(1).build());
-        genres.add(GenreDto.builder().id(2).build());
+        Film film = createTestFilm("Film with Genres", "Description");
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.builder().id(1L).build());
+        genres.add(Genre.builder().id(2L).build());
         film.setGenres(genres);
 
-        FilmDto savedFilm = filmStorage.save(film);
+        Film savedFilm = filmStorage.save(film);
 
         assertThat(savedFilm.getId()).isNotNull();
         assertThat(savedFilm.getGenres()).hasSize(2);
         assertThat(savedFilm.getGenres())
-            .extracting(GenreDto::getId)
-            .containsExactlyInAnyOrder(1, 2);
+            .extracting(Genre::getId)
+            .containsExactlyInAnyOrder(1L, 2L);
     }
 
     @Test
     void testUpdateFilm() {
-        FilmDto film = createTestFilm("Original Name", "Original Description");
-        FilmDto savedFilm = filmStorage.save(film);
+        Film film = createTestFilm("Original Name", "Original Description");
+        Film savedFilm = filmStorage.save(film);
 
         savedFilm.setName("Updated Name");
         savedFilm.setDescription("Updated Description");
-        FilmDto updatedFilm = filmStorage.save(savedFilm);
+        Film updatedFilm = filmStorage.save(savedFilm);
 
         assertThat(updatedFilm.getName()).isEqualTo("Updated Name");
         assertThat(updatedFilm.getDescription()).isEqualTo("Updated Description");
@@ -106,20 +106,20 @@ class FilmDbStorageTest {
 
     @Test
     void testExistsById() {
-        FilmDto film = createTestFilm("Test Film", "Test Description");
-        FilmDto savedFilm = filmStorage.save(film);
+        Film film = createTestFilm("Test Film", "Test Description");
+        Film savedFilm = filmStorage.save(film);
 
         assertThat(filmStorage.existsById(savedFilm.getId())).isTrue();
         assertThat(filmStorage.existsById(999L)).isFalse();
     }
 
-    private FilmDto createTestFilm(String name, String description) {
-        return FilmDto.builder()
+    private Film createTestFilm(String name, String description) {
+        return Film.builder()
             .name(name)
             .description(description)
             .releaseDate(LocalDate.of(2000, 1, 1))
             .duration(120)
-            .mpa(MpaRatingDto.builder().id(1).build())
+            .mpa(MpaRating.builder().id(1L).build())
             .build();
     }
 }

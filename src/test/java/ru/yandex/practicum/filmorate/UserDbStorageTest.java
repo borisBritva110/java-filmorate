@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import ru.yandex.practicum.filmorate.dto.UserDto;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserRowMapper;
 
@@ -37,25 +37,25 @@ class UserDbStorageTest {
 
     @Test
     void testFindAllUsers() {
-        UserDto user1 = createTestUser("user1@test.com", "user1");
-        UserDto user2 = createTestUser("user2@test.com", "user2");
+        User user1 = createTestUser("user1@test.com", "user1");
+        User user2 = createTestUser("user2@test.com", "user2");
 
         userStorage.save(user1);
         userStorage.save(user2);
 
-        List<UserDto> users = userStorage.findAll();
+        List<User> users = userStorage.findAll();
 
         assertThat(users).hasSize(2);
-        assertThat(users).extracting(UserDto::getLogin)
+        assertThat(users).extracting(User::getLogin)
             .containsExactlyInAnyOrder("user1", "user2");
     }
 
     @Test
     void testFindUserById() {
-        UserDto user = createTestUser("test@test.com", "testuser");
-        UserDto savedUser = userStorage.save(user);
+        User user = createTestUser("test@test.com", "testuser");
+        User savedUser = userStorage.save(user);
 
-        Optional<UserDto> foundUser = userStorage.findById(savedUser.getId());
+        Optional<User> foundUser = userStorage.findById(savedUser.getId());
 
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get().getEmail()).isEqualTo("test@test.com");
@@ -64,10 +64,10 @@ class UserDbStorageTest {
 
     @Test
     void testSaveUser() {
-        UserDto user = createTestUser("newuser@test.com", "newuser");
+        User user = createTestUser("newuser@test.com", "newuser");
         user.setName("Name");
 
-        UserDto savedUser = userStorage.save(user);
+        User savedUser = userStorage.save(user);
 
         assertThat(savedUser.getId()).isNotNull();
         assertThat(savedUser.getEmail()).isEqualTo("newuser@test.com");
@@ -77,12 +77,12 @@ class UserDbStorageTest {
 
     @Test
     void testUpdateUser() {
-        UserDto user = createTestUser("original@test.com", "original");
-        UserDto savedUser = userStorage.save(user);
+        User user = createTestUser("original@test.com", "original");
+        User savedUser = userStorage.save(user);
 
         savedUser.setEmail("updated@test.com");
         savedUser.setName("Updated Name");
-        UserDto updatedUser = userStorage.save(savedUser);
+        User updatedUser = userStorage.save(savedUser);
 
         assertThat(updatedUser.getEmail()).isEqualTo("updated@test.com");
         assertThat(updatedUser.getName()).isEqualTo("Updated Name");
@@ -90,8 +90,8 @@ class UserDbStorageTest {
 
     @Test
     void testExistsById() {
-        UserDto user = createTestUser("test@test.com", "testuser");
-        UserDto savedUser = userStorage.save(user);
+        User user = createTestUser("test@test.com", "testuser");
+        User savedUser = userStorage.save(user);
 
         assertThat(userStorage.existsById(savedUser.getId())).isTrue();
         assertThat(userStorage.existsById(999L)).isFalse();
@@ -99,26 +99,26 @@ class UserDbStorageTest {
 
     @Test
     void testAddAndRemoveFriend() {
-        UserDto user1 = createTestUser("user1@test.com", "user1");
-        UserDto user2 = createTestUser("user2@test.com", "user2");
+        User user1 = createTestUser("user1@test.com", "user1");
+        User user2 = createTestUser("user2@test.com", "user2");
 
-        UserDto savedUser1 = userStorage.save(user1);
-        UserDto savedUser2 = userStorage.save(user2);
+        User savedUser1 = userStorage.save(user1);
+        User savedUser2 = userStorage.save(user2);
 
         userStorage.addFriend(savedUser1.getId(), savedUser2.getId());
 
-        List<UserDto> friends = userStorage.getFriends(savedUser1.getId());
+        List<User> friends = userStorage.getFriends(savedUser1.getId());
         assertThat(friends).hasSize(1);
         assertThat(friends.get(0).getLogin()).isEqualTo("user2");
 
         userStorage.removeFriend(savedUser1.getId(), savedUser2.getId());
 
-        List<UserDto> friendsAfterRemoval = userStorage.getFriends(savedUser1.getId());
+        List<User> friendsAfterRemoval = userStorage.getFriends(savedUser1.getId());
         assertThat(friendsAfterRemoval).isEmpty();
     }
 
-    private UserDto createTestUser(String email, String login) {
-        return UserDto.builder()
+    private User createTestUser(String email, String login) {
+        return User.builder()
             .email(email)
             .login(login)
             .name("")

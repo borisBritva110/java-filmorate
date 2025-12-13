@@ -3,15 +3,15 @@ package ru.yandex.practicum.filmorate.storage.user;
 import java.util.List;
 import java.util.Optional;
 
-import ru.yandex.practicum.filmorate.dto.UserDto;
+import ru.yandex.practicum.filmorate.model.User;
 
 public interface UserStorage {
 
-    List<UserDto> findAll();
+    List<User> findAll();
 
-    Optional<UserDto> findById(Long id);
+    Optional<User> findById(Long id);
 
-    UserDto save(UserDto user);
+    User save(User user);
 
     boolean existsById(long id);
 
@@ -21,7 +21,7 @@ public interface UserStorage {
 
     void removeFriend(Long userId, Long friendId);
 
-    List<UserDto> getFriends(Long userId);
+    List<User> getFriends(Long userId);
 
-    List<UserDto> getCommonFriends(Long userId, Long otherId);
+    List<User> getCommonFriends(Long userId, Long otherId);
 }

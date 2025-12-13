@@ -2,15 +2,13 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import java.util.List;
 import java.util.Optional;
-import ru.yandex.practicum.filmorate.dto.FilmDto;
+
+import ru.yandex.practicum.filmorate.model.Film;
 
 public interface FilmStorage {
+    List<Film> findAll();
 
-    List<FilmDto> findAll();
-
-    Optional<FilmDto> findById(Long id);
-
-    FilmDto save(FilmDto film);
+    Optional<Film> findById(Long id);
 
     boolean existsById(Long id);
 
@@ -20,5 +18,7 @@ public interface FilmStorage {
 
     void removeLike(Long filmId, Long userId);
 
-    List<FilmDto> findPopularFilms(int count);
+    Film save(Film film);
+
+    List<Film> findPopularFilms(int count);
 }

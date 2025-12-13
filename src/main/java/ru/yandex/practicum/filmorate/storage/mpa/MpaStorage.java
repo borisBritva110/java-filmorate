@@ -2,13 +2,13 @@ package ru.yandex.practicum.filmorate.storage.mpa;
 
 import java.util.List;
 import java.util.Optional;
-import ru.yandex.practicum.filmorate.dto.MpaRatingDto;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 
 public interface MpaStorage {
 
-    List<MpaRatingDto> findAll();
+    List<MpaRating> findAll();
 
-    Optional<MpaRatingDto> findById(Integer id);
+    Optional<MpaRating> findById(Long id);
 
-    boolean existsById(Integer id);
+    boolean existsById(Long id);
 }

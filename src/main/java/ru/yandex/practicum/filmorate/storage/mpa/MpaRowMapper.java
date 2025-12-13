@@ -6,17 +6,16 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import ru.yandex.practicum.filmorate.dto.MpaRatingDto;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 
 @Component
-public class MpaRowMapper implements RowMapper<MpaRatingDto> {
+public class MpaRowMapper implements RowMapper<MpaRating> {
 
     @Override
-    public MpaRatingDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return MpaRatingDto.builder()
-            .id(rs.getInt("mpa_id"))
+    public MpaRating mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return MpaRating.builder()
+            .id(rs.getLong("mpa_id"))
             .name(rs.getString("name"))
-            .description(rs.getString("description"))
             .build();
     }
 }

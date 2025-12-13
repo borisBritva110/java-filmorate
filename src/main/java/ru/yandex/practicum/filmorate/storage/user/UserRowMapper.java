@@ -2,23 +2,25 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import ru.yandex.practicum.filmorate.dto.UserDto;
+import ru.yandex.practicum.filmorate.model.User;
 
 @Component
-public class UserRowMapper implements RowMapper<UserDto> {
+public class UserRowMapper implements RowMapper<User> {
 
     @Override
-    public UserDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return UserDto.builder()
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return User.builder()
             .id(rs.getLong("user_id"))
             .email(rs.getString("email"))
             .login(rs.getString("login"))
             .name(rs.getString("name"))
             .birthday(rs.getDate("birthday").toLocalDate())
+            .friends(new HashMap<>())
             .build();
     }
 }

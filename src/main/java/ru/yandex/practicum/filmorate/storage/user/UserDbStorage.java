@@ -8,9 +8,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.User;
 
 @Repository
 public class UserDbStorage implements UserStorage {
@@ -23,18 +23,18 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public List<UserDto> findAll() {
+    public List<User> findAll() {
         return jdbcTemplate.query(UserQueries.FIND_ALL, userRowMapper);
     }
 
     @Override
-    public Optional<UserDto> findById(Long id) {
-        List<UserDto> users = jdbcTemplate.query(UserQueries.FIND_BY_ID, userRowMapper, id);
+    public Optional<User> findById(Long id) {
+        List<User> users = jdbcTemplate.query(UserQueries.FIND_BY_ID, userRowMapper, id);
         return users.stream().findFirst();
     }
 
     @Override
-    public UserDto save(UserDto user) {
+    public User save(User user) {
         if (user.getId() == null) {
             Integer emailCount = jdbcTemplate.queryForObject(UserQueries.CHECK_EMAIL_EXISTS, Integer.class, user.getEmail());
 
@@ -49,7 +49,6 @@ public class UserDbStorage implements UserStorage {
             }
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
-
             jdbcTemplate.update(connection -> {
                 var ps = connection.prepareStatement(UserQueries.INSERT, new String[]{"user_id"});
                 ps.setString(1, user.getEmail());
@@ -116,12 +115,12 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public List<UserDto> getFriends(Long userId) {
+    public List<User> getFriends(Long userId) {
         return jdbcTemplate.query(UserQueries.GET_FRIENDS, userRowMapper, userId);
     }
 
     @Override
-    public List<UserDto> getCommonFriends(Long userId, Long otherId) {
+    public List<User> getCommonFriends(Long userId, Long otherId) {
         return jdbcTemplate.query(UserQueries.GET_COMMON_FRIENDS, userRowMapper, userId, otherId);
     }
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import ru.yandex.practicum.filmorate.dto.MpaRatingDto;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 
 @Repository
 public class MpaDbStorage implements MpaStorage {
@@ -20,18 +20,18 @@ public class MpaDbStorage implements MpaStorage {
     }
 
     @Override
-    public List<MpaRatingDto> findAll() {
+    public List<MpaRating> findAll() {
         return jdbcTemplate.query(MpaQueries.FIND_ALL, mpaRowMapper);
     }
 
     @Override
-    public Optional<MpaRatingDto> findById(Integer id) {
-        List<MpaRatingDto> mpaRatings = jdbcTemplate.query(MpaQueries.FIND_BY_ID, mpaRowMapper, id);
+    public Optional<MpaRating> findById(Long id) {
+        List<MpaRating> mpaRatings = jdbcTemplate.query(MpaQueries.FIND_BY_ID, mpaRowMapper, id);
         return mpaRatings.stream().findFirst();
     }
 
     @Override
-    public boolean existsById(Integer id) {
+    public boolean existsById(Long id) {
         Integer count = jdbcTemplate.queryForObject(MpaQueries.EXISTS_BY_ID, Integer.class, id);
         return count != null && count > 0;
     }

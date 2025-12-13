@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@Valid@RequestBody User updatedUser) {
+    public User update(@Valid @RequestBody User updatedUser) {
         User updated = userService.updateUser(updatedUser);
         log.info(ValidationMessages.USER_UPDATED, updated.getLogin());
         return updated;
@@ -59,12 +59,15 @@ public class UserController {
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.getUserById(id);
+        userService.getUserById(friendId);
         userService.removeFriend(id, friendId);
         log.info(ValidationMessages.FRIEND_REMOVED, id, friendId);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriends(@PathVariable Long id) {
+        userService.getUserById(id);
         return userService.getFriends(id);
     }
 
